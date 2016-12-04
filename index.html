@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Find Me A...</title>
+  <!-- CORE CSS-->
+  
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+  <style type="text/css">
+    html,
+    body {
+      height: 100%;
+    }
+    html {
+      display: table;
+      margin: auto;
+    }
+    body {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    .margin {
+      margin: 0 !important;
+    }
+  </style>
+
+  <script type="text/javascript">
+    function getSession(){
+      var url = "http://52.89.116.249/~makafui.fie/FindMe/ajaxRequests.php?cmd=1";
+      $.ajax(url,{
+        async:true, complete: getSessionComplete
+      });
+    }
+    function getSessionComplete(xhr, status){
+      if(status!="success"){
+      }else{
+        var response = $.parseJSON(xhr.responseText);
+        if(response.result==0){
+         alert("Not signed in!");
+         window.location.href="events.html";
+       }
+       else{
+
+        var user=response.user;
+        localStorage.setItem('id', user.memberid);
+        localStorage.setItem('firstname', user.firstname);
+        localStorage.setItem('lastname', user.lastname);
+        localStorage.setItem('phone', user.phoneNumber);
+
+        window.location.href="home.html";
+      }
+    }
+
+  }
+  function login(){
+
+        //var email = $("#email").val();
+      //var password = $("#password").val();
+      var data =$("#login_form").serialize();
+      // var url="ajaxRequests.php?cmd=1&email="+$email+"&password="+$password;
+      // $.ajax(url,{
+      //  async:true, complete:loginComplete,type:'POST'
+      // });
+      $.ajax({
+        type:'POST',
+        url: 'http://52.89.116.249/~makafui.fie/FindMe/login.php',
+        //url: 'login.php',
+        data: data,
+        success: function(response){
+
+          if(response.trim()=="ok"){
+            alert("Signed in successfully!");
+
+            
+            getSession();
+
+          }
+
+          else{
+            $("#error").fadeIn(1000, function(){      
+              $("#error").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; '+response+' !</div>');
+            });
+            $("#email").html("");
+            $("#password").html("");
+          }
+
+
+        }
+
+      });
+      return false;
+
+      window.location("home.html");
+
+          // function loginComplete(xhr, status){
+          //  if(status!="success"){
+          //    alert("Error logging in!");
+          //    return;
+          //  }
+
+        }
+
+        
+      </script>
+
+    </head>
+
+    <body class="red">
+
+
+      <div id="login-page" class="row">
+        <div class="col s12 z-depth-6 card-panel">
+        <div id="error">
+          
+        </div>
+          <form class="login-form">
+            <div class="row">
+              <div class="input-field col s12 center">
+                <img src="imgs/map-pin-location.jpg" alt="" class="responsive-img valign profile-image-login">
+                <p class="center login-form-text">Find Me A...</p>
+              </div>
+            </div>
+            <div class="row margin">
+              <div class="input-field col s12">
+                <i class="mdi-social-person-outline prefix"></i>
+                <input class="validate" id="email" type="email" placeholder="example@mail.com">
+                <label for="email" data-error="wrong" data-success="right" class="center-align"></label>
+              </div>
+            </div>
+            <div class="row margin">
+              <div class="input-field col s12">
+                <i class="mdi-action-lock-outline prefix"></i>
+                <input id="password" type="password" placeholder="password">
+                <label for="password"></label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <a  onclick="login()" class="btn waves-effect waves-light col s12">Login</a>
+              </div>
+              <div class="input-field col s12">
+                <p class="margin center medium-small sign-up"><a href="register.html">Register</a></p>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+
+
+
+  <!-- ================================================
+    Scripts
+    ================================================ -->
+
+    <!-- jQuery Library -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <script type="text/javascript" src="js/platformOverrides.js"></script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-27820211-3', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+
+  <!--  <footer class="page-footer">
+          <div class="footer-copyright">
+            <div class="container">
+            © 2015 W3lessons.info
+            <a class="grey-text text-lighten-4 right" href="http://w3lessons.info">Karthikeyan K</a>
+            </div>
+          </div>
+        </footer> -->
+      </body>
+
+      </html>

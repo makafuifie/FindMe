@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Find Me A...</title>
+  <!-- CORE CSS-->
+  
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+  <style type="text/css">
+    html,
+    body {
+      height: 100%;
+    }
+    html {
+      display: table;
+      margin: auto;
+    }
+    body {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    .margin {
+      margin: 0 !important;
+    }
+  </style>
+
+  <script>
+    function sendSMS(phone){
+      var url = "http://52.89.116.249/~makafui.fie/FindMe/ajaxRequests.php?cmd=2&to="+phone;
+      $.ajax(url,{
+        async:true, complete: sendSMSComplete
+      }
+    }
+
+    function sendSMSComplete(xhr, status){
+     if(status!="success"){
+
+     }else{
+      var response = $.parseJSON(xhr.responseText);
+      if(response.result==0){
+        alert("Could not send confirmation message!");
+       
+     }
+     else{
+
+      alert("confirmation message sent");
+    }
+  }
+
+}
+
+function register(){
+      // var email = $("#email").val();
+      // var lastName = $("#lastName").val();
+      // var lastName = $("#firstName").val();
+      // var password = $("#password").val();
+      // var phone = $("#phone").val();
+      // var url="ajaxRequests.php?cmd=1&email="+email+"lastName="+lastName+"firstName="+firstName+"password="+password+"phone="+phone;
+      // $.ajax(url,{
+      //  async: true, complete:registerComplete
+      // });
+
+      var data=$("#register-form").serialize();
+      console.log(data);
+
+      $.ajax({
+        type : 'POST',
+        url  : 'http://52.89.116.249/~makafui.fie/FindMe/register.php',
+        data : data,
+        success: function(response){
+          if(response.trim()==1){
+            $("#error").fadeIn(1000, function(){
+              $("#error").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Sorry email already taken !</div>');
+
+            });
+
+            $("#email").html("");
+            $("#lastname").html("");
+            $("#firstname").html("");
+            $("#password").html("");
+            $("#phone").html("");
+
+          }
+          else if(response.trim()=="registered"){
+           alert("Registration successful");
+           var phone = $("#phone").value();
+           sendSMS(phone);
+           window.location.href="index.html";
+         }
+
+         else{
+          $("#error").fadeIn(1000, function(){
+            $("#error").html('<div class="alert alert-danger"><span class="glyphicon glyphicon-info-sign"></span> &nbsp; '+response+' !</div>');
+
+          });
+          $("#email").html("");
+          $("#lastname").html("");
+          $("#firstname").html("");
+          $("#password").html("");
+          $("#phone").html("");
+        }
+      }
+    });
+      return false;
+    }
+
+  </script>
+  
+</head>
+
+<body class="blue">
+
+
+  <div id="login-page" class="row">
+    <div class="col s12 z-depth-6 card-panel">
+      <div id="error">
+
+      </div>
+      <form class="register-form">
+        <div class="row">
+          <div class="input-field col s12 center">
+            <img src="imgs/map-pin-location.jpg" alt="" class="responsive-img valign profile-image-login">
+            <p class="center login-form-text">Find Me A...</p>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-social-person-outline prefix"></i>
+            <input id="firstname" type="text" class="validate" placeholder="First Name">
+            <!-- <label for="username" class="center-align">Username</label> -->
+          </div>
+        </div>
+        <div class = "row margin">
+          <div class="input-field col s12">
+            <i class="mdi-social-person-outline prefix"></i>
+            <input id="lastname" type="text" class="validate" placeholder="Last Name">
+            <!-- <label for="username" class="center-align">Username</label> -->
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-communication-email prefix"></i>
+            <input id="email" type="email" class="validate" placeholder="Email: example@mail.com">
+            <!-- <label for="email" class="center-align">Email</label> -->
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-communication-email prefix"></i>
+            <input id="phone" type="number" class="validate" placeholder="Phone: 233233524524">
+            <!-- <label for="email" class="center-align">Email</label> -->
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-action-lock-outline prefix"></i>
+            <input id="password" type="password" class="validate" placeholder="Password">
+            <!-- <label for="password">Password</label> -->
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-action-lock-outline prefix"></i>
+            <input id="password-again" type="password" placeholder="Re-type password">
+            <!-- <label for="password-again">Re-type password</label> -->
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="input-field col s12">
+            <a  onclick="register()" class="btn waves-effect waves-light col s12">Register</a>
+          </div>
+          <div class="input-field col s12">
+            <p class="margin center medium-small sign-up">Already have an account? <a href="index.html">Login</a></p>
+          </div>
+        </div>
+
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+
+
+  <!-- ================================================
+    Scripts
+    ================================================ -->
+
+    <!-- jQuery Library -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <script type="text/javascript" src="js/platformOverrides.js"></script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-27820211-3', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+
+  <!--  <footer class="page-footer">
+          <div class="footer-copyright">
+            <div class="container">
+            © 2015 W3lessons.info
+            <a class="grey-text text-lighten-4 right" href="http://w3lessons.info">Karthikeyan K</a>
+            </div>
+          </div>
+        </footer> -->
+      </body>
+
+      </html>
