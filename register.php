@@ -24,7 +24,7 @@
      $count=$stmt->rowCount();
      //echo $count;
      if($count==0){
-      $user=new user();
+      $user=new users();
       $row = $user->addNewUser($firstName, $lastName, $email, $password, $phone);
       //echo $row;
 

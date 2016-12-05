@@ -57,12 +57,12 @@ function sendSMS(){
 	
 	if(isset($_REQUEST['to'])){
 		$to = $_REQUEST['to'];	
-		$from ="Find Me A...";
+		$from ="FindMe";
 		$smsc="smscMTN";
-		$msg="You have successfully been registered";
+		$msg="You have successfully registered for FindMe A...";
 		$msg= preg_replace('/\s+/', '%20', $msg);
 		$url="http://52.89.116.249:13013/cgi-bin/sendsms?username=mobileapp&password=foobar&to=".$to."&from=".$from."&smsc=".$smsc."&text=".$msg."";
-		echo $url;
+		 // echo $url;
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 
@@ -70,12 +70,12 @@ function sendSMS(){
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
 
         // Get the response and close the channel.
-		session_write_close();
+		// session_write_close();
 		$response = curl_exec($ch);
-		echo "response is ".$response;
+		 // echo "response is ".$response;
 		curl_close($ch);
 		$message="";
-		if($response==0){
+		if($response===TRUE){
 			$message= "Yes";
 
 		}

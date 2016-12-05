@@ -10,7 +10,7 @@
   // echo $email;
   // echo $password;
   
-  $user=new user();
+  $user=new users();
   $row = $user->login($email , $password);
   if($row=false){
     echo "Error finding user";

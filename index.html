@@ -29,7 +29,9 @@
 
   <script type="text/javascript">
     function getSession(){
-      var url = "http://52.89.116.249/~makafui.fie/FindMe/ajaxRequests.php?cmd=1";
+      // var url = "http://52.89.116.249/~makafui.fie/FindMe/ajaxRequests.php?cmd=1";
+      var url = "ajaxRequests.php?cmd=1";
+
       $.ajax(url,{
         async:true, complete: getSessionComplete
       });
@@ -57,17 +59,18 @@
   }
   function login(){
 
-        //var email = $("#email").val();
-      //var password = $("#password").val();
-      var data =$("#login_form").serialize();
+        var email = $("#email").val();
+      var password = $("#password").val();
+      // var data =$("#login_form").serialize();
       // var url="ajaxRequests.php?cmd=1&email="+$email+"&password="+$password;
       // $.ajax(url,{
       //  async:true, complete:loginComplete,type:'POST'
       // });
+      var data  = "email="+email+"&password="+password;
       $.ajax({
         type:'POST',
-        url: 'http://52.89.116.249/~makafui.fie/FindMe/login.php',
-        //url: 'login.php',
+        // url: 'http://52.89.116.249/~makafui.fie/FindMe/login.php',
+        url: 'login.php',
         data: data,
         success: function(response){
 
@@ -93,7 +96,7 @@
       });
       return false;
 
-      window.location("home.html");
+      // window.location("home.html");
 
           // function loginComplete(xhr, status){
           //  if(status!="success"){
