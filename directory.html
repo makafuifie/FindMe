@@ -84,30 +84,36 @@
 			<!-- error will be showen here ! -->
 
 		</div>
+		<div class="row" id="dim">
+			<div class="input-field col s12">                      
+			<select onchange="change(this.value)" id = "type" class="browser-default" >
+					
+					<option value="restaurant" selected>Restaurants</option>
+					<option value="lodging">Lodging</option>
+					<option value="atm">ATMs</option>
+					<option value="gas_station">Fuel Stations</option>
+					<option value="school">Schools</option> 
+					<option value="store">Stores</option>                           
+				</select>           
+			</div>
+		</div>
 		<div id="map" style="display: none">
 		</div>
 
 		<br />
 		<div id="info">
 		</div>
-		<div class="card-panel">
-			<span class="blue-text text-darken-2">This is a card panel with dark blue text</span>
-		</div>
-		<div class="row">
-			<div class="col s12 m6">
-				<div class="card white">
-					<div class="card-content">
-						<span class="card-title">Card Title</span>
-						<p>I am a very simple card. I am good at containing small bits of information.
-						</p>
-					</div>
-
-				</div>
-			</div>
-		</div>
+		
+		
 
 	</div>
 	<script>
+	function change(type){
+		 if (type==""){
+		 	return;
+		 } 
+		 createDirectory();
+	}
 		function getLoc(){
 			navigator.geolocation.getCurrentPosition(onSuccess, onError, { timeout: 30000 });
 		}
@@ -117,41 +123,55 @@
       var lat=position.coords.latitude;
       var long=position.coords.longitude;
       latLong = {lat: lat, lng: long};
-      localStorage.setItem("coordinates", latLong);
+      // localStorage.setItem("coordinates", latLong);
       createDirectory();
 
   }
   function onError(error){
-      alert('code: '+error.code+'\n'+
-        'message: '+error.message + '\n');
-    }
+  	alert('code: '+error.code+'\n'+
+  		'message: '+error.message + '\n');
+  }
   function createDirectory(){
-  	latLong= localStorage.getItem("coordinates");
-  	var map = new google.maps.Map(document.getElementById('map'));
+  	// latLong= localStorage.getItem("coordinates");
+  	var typeSelect = document.getElementById('type');
+  	var type = typeSelect.options[typeSelect.selectedIndex].value;
+  	var map = new google.maps.Map(document.getElementById('map'), {
+  		center: latLong,
+  		zoom: 15,
+  		mapTypeId: 'roadmap'
+  	});
   	var service = new google.maps.places.PlacesService(map);
   	service.nearbySearch({
   		location: latLong,
-  		radius: 1000
+  		radius: 10000,
+  		type: [type]
   	}, callback);
 
 
   }
   function callback(results, status) {
-  	var info = "";
+  	var info ="";
+  	var infoBuffer=[];
   	if (status === google.maps.places.PlacesServiceStatus.OK) {
   		localStorage.setItem("results", results);
   		var name;
   		var address;
-  		var phone;
-  		var websiteFull;
+  		var phone="";
+  		var websiteFull="";
   		var rating;
   		var openingHours;
+  		var icon;
   		var hostnameRegexp = new RegExp('^https?://.+?/');
   		for (var i = 0; i < results.length; i++) {
   			name = results[i].name;
+  			icon = results[i].icon;
+  			console.log(""+icon);
   			address = results[i].vicinity;
-  			if (place.formatted_phone_number) {
+  			if (results[i].formatted_phone_number) {
   				phone = results[i].formatted_phone_number;
+  			}
+  			else{
+  				phone="none";
   			}
   			if (results[i].website) {
   				var fullUrl = results[i].website;
@@ -161,10 +181,13 @@
   					websiteFull = website;
   				}
   			}
+  			else{
+  				websiteFull="none";
+  			}
   			if (results[i].rating) {
   				var ratingHtml = '';
   				for (var i = 0; i < 5; i++) {
-  					if (place.rating < (i + 0.5)) {
+  					if (results[i].rating < (i + 0.5)) {
   						ratingHtml += '&#10025;';
   					} else {
   						ratingHtml += '&#10029;';
@@ -173,11 +196,23 @@
   				}
   				rating = ratingHtml;
   			}
-  			info+="<div class='row'><div class='col s12'><div class='card-panel teal'><span class='white-text'><p>Name: "+name+"</p><p>Address: "+address+"</p><p>Phone: "+phone+" </p><p>Website: "+websiteFull+"</p><p>"+rating+"</span></div></div>";
+  			else{
+  				rating="none";
+  			}
+
+
+  			
+  			infoBuffer.push("<div><ul class='collection'><li class='collection-item avatar'><img class='hotelIcon' src="+icon+"alt='' class='circle'/><p>Name: "+name+"</p><p>Address: "+address+"</p><p>Phone: "+phone+" </p><p>Website: "+
+  				+websiteFull+"</p><p>Rating: "+rating+"</li></ul></div>");
+
+  			// infoBuffer.push("<div class='row'><div class='col s12'><div class='card-panel'><span class='black-text'><p>Name: "+name+"</p><p>Address: "+address+"</p><p>Phone: "+phone+" </p><p>Website: "+
+  			// 	+websiteFull+"</p><p>Rating: "+rating+"</span></div></div></div>");
+
 
 
   		}
-  		("#info").innerHTML(info);
+  		info = infoBuffer.join('\n');
+  		$("#info").html(info);
   	}
   	else{
   		$("#error").fadeIn(1000, function(){
