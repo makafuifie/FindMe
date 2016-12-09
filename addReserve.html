@@ -84,248 +84,68 @@
 		<div id="error">
 			<!-- error will be showen here ! -->
 
-		<div id="login-page" class="row">
-			<div class="col s12 z-depth-6 card-panel">
+			<div id="login-page" class="row">
+				<div class="col s12 z-depth-6 card-panel">
 
-				<form class="register-form">
+					<form class="register-form">
 
-					<div id="error">
+						<div id="error">
 
-					</div>
-					<div class="row margin">
-						<div class="input-field col s12">
-							
-							<input id="name" type="text" class="validate" placeholder="Name of location">
-							<!-- <label for="username" class="center-align">Username</label> -->
 						</div>
-					</div>
-					<div class = "row margin">
-						<div class="input-field col s12">
-							
-							<input id="address" type="text" class="validate" placeholder="address">
-							<!-- <label for="username" class="center-align">Username</label> -->
-						</div>
-					</div>
-					<div class="row margin">
-						<div class="input-field col s12">
-							
-							<input id="lat" type="number" class="validate" placeholder="latitude">
-							<!-- <label for="lat" class="center-align">Latitude</label>  -->
-						</div>
-					</div>
-					<div class="row margin">
-						<div class="input-field col s12">
-							
-							<input id="long" type="number" class="validate" placeholder="Longitude">
-							<!-- <label for="email" class="center-align">Email</label> -->
-						</div>
-					</div>
-					<div class="row" id="dim">
-						<div class="input-field col s12">                      
-							<select  id = "type" class="browser-default" >
-								
-								                           
-							</select>           
-						</div>
-					</div>
+						<div class="row margin">
+							<div class="input-field col s12">
 
+								<input id="name" type="text" class="validate" placeholder="Name of location">
+								<!-- <label for="username" class="center-align">Username</label> -->
+							</div>
+						</div>
 
-					<div class="row">
-						<div class="input-field col s12">
-							<a  onclick="add()" class="btn waves-effect waves-light col s12">Add Location</a>
+						<div class="row margin">
+							<div class="input-field col s12">
+
+								<input id="number" type="number" class="validate" placeholder="Number of reservations">
+								<!-- <label for="lat" class="center-align">Latitude</label>  -->
+							</div>
 						</div>
 						
-					</div>
+						
+						</div>
+
+
+						<div class="row">
+							<div class="input-field col s12">
+								<a  onclick="add()" class="btn waves-effect waves-light col s12">Add Reservation</a>
+							</div>
+
+						</div>
 
 
 
-				</form>
+					</form>
+				</div>
 			</div>
+
+
+
 		</div>
-		
-		
-
-	</div>
-	<script>
-		function getLoc(){
-			navigator.geolocation.getCurrentPosition(onSuccess, onError, { timeout: 30000 });
+		<script>
+		function add(){
+			
 		}
-		
-		function change(type){
-			if (type==""){
-				return;
-			} 
-			createDirectory();
-		}
-		
-		var latLong; 
-		function onSuccess(position) {
-      //console.log('success');
-      var lat=position.coords.latitude;
-      var long=position.coords.longitude;
-      latLong = {lat: lat, lng: long};
-      // localStorage.setItem("coordinates", latLong);
-      createDirectory();
-
-  }
-  function onError(error){
-  	alert('code: '+error.code+'\n'+
-  		'message: '+error.message + '\n');
-  }
-  function createDirectory(){
-  	// latLong= localStorage.getItem("coordinates");
-  	var typeSelect = document.getElementById('type');
-  	var type = typeSelect.options[typeSelect.selectedIndex].value;
-  	var map = new google.maps.Map(document.getElementById('map'), {
-  		center: latLong,
-  		zoom: 15,
-  		mapTypeId: 'roadmap'
-  	});
-  	var service = new google.maps.places.PlacesService(map);
-  	service.nearbySearch({
-  		location: latLong,
-  		radius: 1000,
-  		type: [type]
-  	}, callback);
+		</script>
 
 
-  }
-  function callback(results, status) {
-  	var info ="";
-  	var infoBuffer=[];
-  	if (status === google.maps.places.PlacesServiceStatus.OK) {
-  		localStorage.setItem("results", results);
-  		var name;
-  		var address;
-  		var phone="";
-  		var websiteFull="";
-  		var rating;
-  		var openingHours;
-  		var icon;
-  		var hostnameRegexp = new RegExp('^https?://.+?/');
-  		for (var i = 0; i < results.length; i++) {
-  			name = results[i].name;
-  			icon = results[i].icon;
-  			console.log(""+icon);
-  			address = results[i].vicinity;
-  			if (results[i].formatted_phone_number) {
-  				phone = results[i].formatted_phone_number;
-  			}
-  			else{
-  				phone="none";
-  			}
-  			if (results[i].website) {
-  				var fullUrl = results[i].website;
-  				var website = hostnameRegexp.exec(results[i].website);
-  				if (website === null) {
-  					website = 'http://' + results[i].website + '/';
-  					websiteFull = website;
-  				}
-  			}
-  			else{
-  				websiteFull="none";
-  			}
-  			if (results[i].rating) {
-  				var ratingHtml = '';
-  				for (var i = 0; i < 5; i++) {
-  					if (results[i].rating < (i + 0.5)) {
-  						ratingHtml += '&#10025;';
-  					} else {
-  						ratingHtml += '&#10029;';
-  					}
-
-  				}
-  				rating = ratingHtml;
-  			}
-  			else{
-  				rating="none";
-  			}
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnZo0yYNIxiuZKL4pY9EgcMnufoqdiGIg&libraries=places&callback=getLoc" async defer></script>
 
 
-  			
-  			infoBuffer.push("<div><ul class='collection'><li class='collection-item avatar'><img src='"+icon+"' alt='' class='circle'/><p>Name: "+name+"</p><p>Address: "+address+"</p><p>Phone: "+phone+" </p><p>Website: "+
-  				+websiteFull+"</p><p>Rating: "+rating+"</p><a href='addReserve.html' class='btn waves-effect waves-light col s6'>Reserve</a></li></ul></div>");
+		<script type="text/javascript" src="js/index.js"></script><!--Import jQuery before materialize.js-->
+		<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-  			// result+="<tr bgcolor='$bgcolor' style='$style'><td>"+obj.user[length-1].STUDENTID+"</td><td>"+obj.user[length-1].USERNAME+"</td><td>"+obj.user[length-1].FIRSTNAME +" "+obj.user[length-1].LASTNAME+"</td><td>"+obj.user[length-1].GENDER+"</td> <td>"+obj.user[length-1].PHONENUMBER+"</td><td><span  onclick='getStudent("+obj.user[length-1].STUDENTID+")' class='btn'>Update</span><br><span onclick=viewDetails("+obj.user[length-1].STUDENTID+")><button class='btn'>View More</button></span><br><a href='medicalComplaintAdd.php?sid="+obj.user[length-1].STUDENTID+"' class='button'>Add Medical Complaint</a><br></td></tr>";
+		<script type="text/javascript" src="js/platformOverrides.js"></script>
+		<script>
 
-
-  			// infoBuffer.push("<div class='row'><div class='col s12'><div class='card-panel'><span class='black-text'><p>Name: "+name+"</p><p>Address: "+address+"</p><p>Phone: "+phone+" </p><p>Website: "+
-  			// 	+websiteFull+"</p><p>Rating: "+rating+"</span></div></div></div>");
-// onclick='reserve("+name+","+phone+","+address+","+websiteFull+")' 
-
-
-  		}
-  		info = infoBuffer.join('\n');
-  		$("#info").html(info);
-  	}
-  	else{
-  		$("#error").fadeIn(1000, function(){
-
-  			$("#error").html('<div class="alert alert-danger"><i class="material-icons">info_outline</i> &nbsp; None found !</div>');
-
-  		});
-  		$("#info").html("");
-
-  	}
-  }
-  function print(name){
-  	console.log("hksj");
-  }
-
-  function reserve(name, phone, address, website){
-  	var userID = localStorage.getItem('id');
-  	// var url = "http://52.89.116.249/~makafui.fie/CarPool/ajaxRequests.php?cmd=3&name="+name+"&address="+address+"&lat="+lat+"&long="+long+"&type="+type;
-  	var url = "ajaxRequests.php?cmd=3&name="+name+"&address="+address+"&phone="+phone+"&website="+website+"&user="+userID;
-  	$.ajax(url,{
-  		async:true, complete: reserveComplete
-  	});
-
-
-  }
-  function reserveComplete(xhr, status){
-  	if(status!="success"){
-				// $("#error").fadeIn(1000, function(){
-				// 	$("#error").html('<div class="alert alert-danger"><span class="glyphicon glyphicon-info-sign"></span> &nbsp; Error sending request !</div>');
-
-				// });
-				alert("Unable to add reservation. Please try later");
-
-			}
-
-			var response = $.parseJSON(xhr.responseText.trim());
-			if(response.result==0){
-				// $("#error").fadeIn(1000, function(){
-				// 	$("#error").html('<div class="alert alert-danger"><span class="glyphicon glyphicon-info-sign"></span> &nbsp; '+response.message+' !</div>');
-
-				// });
-				alert("Unable to add reservation. Please try later");
-			}
-			else{
-
-				alert("Reservation added!");
-				// $("#btn-createPool").html('<img src="images/ajax-loader.gif" /> &nbsp; Creating pool ...');
-
-
-				
-				//window.location.href="owner.html";
-				setTimeout('window.location.href="home.html";', 500);
-			}
-		}
-
-
-	</script>
-
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnZo0yYNIxiuZKL4pY9EgcMnufoqdiGIg&libraries=places&callback=getLoc" async defer></script>
-
-
-	<script type="text/javascript" src="js/index.js"></script><!--Import jQuery before materialize.js-->
-	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
-	<script type="text/javascript" src="js/platformOverrides.js"></script>
-	<script>
-
-	</script>
-</body>
-</html>
+		</script>
+	</body>
+	</html>

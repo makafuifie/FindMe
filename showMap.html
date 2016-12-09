@@ -1,16 +1,16 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<!--Import Google Icon Font-->
-	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<!--Import materialize.css-->
-	
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+  <!--Import Google Icon Font-->
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  
+  <link rel="stylesheet" type="text/css" href="css/style.css">
 
-	<!--Let browser know website is optimized for mobile-->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <style>
     #rating {
@@ -165,44 +165,8 @@
           mapTypeId: 'roadmap'
         });
 
-        downloadUrl('http://52.89.116.249/~makafui.fie/FindMe/markers.php', function(data){
-          var data = JSON.parse(data.responseText);
-          if(data!=null){
-            for(var i = 0;i<data.length;i++){
-              var name = data[i].name;
-              var address = data[i].address;
-              var type = data[i].type;
-              var phoneNumber = data[i].phoneNumber;
-
-              var point = new google.maps.LatLng(
-                parseFloat(markerElem.getAttribute('lat')),
-                parseFloat(markerElem.getAttribute('lng')));
-              var infowincontent = document.createElement('div');
-              var strong = document.createElement('strong');
-              strong.textContent = name
-              infowincontent.appendChild(strong);
-              infowincontent.appendChild(document.createElement('br'));
-
-              var text = document.createElement('text');
-              text.textContent = address
-              infowincontent.appendChild(text);
-              var icon = customLabel[type] || {};
-              var marker = new google.maps.Marker({
-                map: map,
-                position: point,
-                label: icon.label
-              });
-              marker.addListener('click', function() {
-                infoWindow.setContent(infowincontent);
-                infoWindow.open(map, marker);
-              });
-
-
-
-
-            }
-          }
-        }
+        
+        
         // Create the search box and link it to the UI element.
         var input = document.getElementById('pac-input');
         var searchBox = new google.maps.places.SearchBox(input);
@@ -301,23 +265,9 @@
     }
   }
 
-  function downloadUrl(url, callback) {
-    var request = window.ActiveXObject ?
-    new ActiveXObject('http://52.89.116.249/~makafui.fie/FindMe/markers.php') :
-    new XMLHttpRequest;
 
-    request.onreadystatechange = function() {
-      if (request.readyState == 4) {
-        request.onreadystatechange = doNothing;
-        callback(request, request.status);
-      }
-    };
 
-    request.open('GET', url, true);
-    request.send(null);
-  }
-
-  function doNothing() {}
+ 
 
   function createMarker(place) {
    var placeLoc = place.geometry.location;
