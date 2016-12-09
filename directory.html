@@ -87,7 +87,7 @@
 		</div>
 		<div class="row" id="dim">
 			<div class="input-field col s12">                      
-			<select onchange="change(this.value)" id = "type" class="browser-default" >
+				<select onchange="change(this.value)" id = "type" class="browser-default" >
 					
 					<option value="restaurant" selected>Restaurants</option>
 					<option value="lodging">Lodging</option>
@@ -109,12 +109,16 @@
 
 	</div>
 	<script>
-	function change(type){
-		 if (type==""){
-		 	return;
-		 } 
-		 createDirectory();
-	}
+		$(document).ready(function() {
+			$('select').material_select();
+		});
+
+		function change(type){
+			if (type==""){
+				return;
+			} 
+			createDirectory();
+		}
 		function getLoc(){
 			navigator.geolocation.getCurrentPosition(onSuccess, onError, { timeout: 30000 });
 		}
@@ -144,7 +148,7 @@
   	var service = new google.maps.places.PlacesService(map);
   	service.nearbySearch({
   		location: latLong,
-  		radius: 10000,
+  		radius: 5000,
   		type: [type]
   	}, callback);
 
@@ -218,9 +222,10 @@
   	else{
   		$("#error").fadeIn(1000, function(){
 
-  			$("#error").html('<div class="alert alert-danger"><i class="material-icons">info_outline</i> &nbsp; Not found !</div>');
+  			$("#error").html('<div class="alert alert-danger"><i class="material-icons">info_outline</i> &nbsp; None found !</div>');
 
   		});
+  		$("#info").html("");
 
   	}
   }
