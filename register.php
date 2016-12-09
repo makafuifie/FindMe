@@ -19,7 +19,7 @@
     $lastName = $_POST['lastName'];
 
     try{
-     $stmt = $db_con->prepare("SELECT * FROM  users WHERE email=:email");
+     $stmt = $db_con->prepare("SELECT * FROM  Users WHERE email=:email");
      $stmt->execute(array(":email"=>$email));
      $count=$stmt->rowCount();
      //echo $count;

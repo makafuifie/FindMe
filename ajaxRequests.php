@@ -37,6 +37,7 @@ function addUser(){
 
 
 function getSession(){
+	
 	session_start();
 	if(!isset($_SESSION['USER'])){
 		echo '{"result":0,"message":"User not logged in"}';
@@ -74,16 +75,16 @@ function sendSMS(){
 		$response = curl_exec($ch);
 		 // echo "response is ".$response;
 		curl_close($ch);
-		$message="";
-		if($response===TRUE){
-			$message= "Yes";
+		// $message="";
+		// if($response===TRUE){
+		// 	$message= "Yes";
 
-		}
-		else{
-			$message= "No";
-		}
+		// }
+		// else{
+		// 	$message= "No";
+		// }
         // echo "<br>";
-		echo $message;
+		// echo $message;
 	}
 
 }

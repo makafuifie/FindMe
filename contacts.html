@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<!--Import Google Icon Font-->
+	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!--Import materialize.css-->
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	
+
+	<!--Let browser know website is optimized for mobile-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+	
+	<script>
+		var userAgent = navigator.userAgent + '';
+		if (userAgent.indexOf('iPhone') > -1) {
+			document.write('<script src="js/cordova-iphone.js"></sc' + 'ript>');
+			var mobile_system = 'iphone';
+		} else if (userAgent.indexOf('Android') > -1) {
+			document.write('<script src="js/cordova-android.js"></sc' + 'ript>');
+			var mobile_system = 'android';
+		} else {
+			var mobile_system = '';
+		}
+	</script>
+	<script type="text/javascript">
+		function showMap(searchPlace){
+			localStorage.setItem('place', searchPlace);
+			window.location.href="showMap.html";
+
+		}
+	</script>
+	
+	<script type="text/javascript" src="js/jquery-3.1.1.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script type="text/javascript" src="js/materialize.min.js"></script>
+
+</head>
+<body>
+	
+	<nav>
+		<div class="nav-wrapper blue-grey darken-3">
+			<a href="#!" class="brand-logo">FindMe A...</a>
+
+			<ul class="right hide-on-med-and-down">
+				<li><a href="home.html">Home</a></li>
+				<li><a href="directory.html">Directory</a></li>
+				<li><a href="reservations.html">Reservations</a></li>
+				<li><a href="index.html">Logout</a></li>
+			</ul>
+
+			<ul class="side-nav" id="slide-out">
+				<li><div class="userView">
+					<div class="background">
+						<img src="imgs/concrete_wall.jpg">
+					</div>
+					<a href="#!user"><img class="circle" src="imgs/alicia.jpg"></a>
+					<a href="#!name"><span class="white-text name">Jane Doe</span></a>
+					<a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
+				</div></li>
+				<li><a href="home.html">Home</a></li>
+				<li><a href="directory.html">Directory</a></li>
+				<li><a href="reservations.html">Reservations</a></li>
+				<li><a href="contacts.html">Contacts</a></li>
+				<li><a href="index.html">Logout</a></li>
+			</ul>
+			<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+		</div>
+	</nav>
+
+	
+	<div class="container">
+		<div>
+
+			<div>
+				<div id="error">
+					<!-- error will be showen here ! -->
+
+				</div>
+				<br />
+				
+				
+				
+				<h2>Contacts List</h2>
+				<div id="mobile"></div>
+				<div id="email"></div>
+
+				<script type="text/javascript">
+					document.addEventListener("deviceready", init, false);
+					function init() {
+						navigator.contacts.find([navigator.contacts.fieldType.displayName],gotContacts,errorHandler);
+					}
+					function errorHandler(e) {
+						console.log("errorHandler: "+e);
+					}
+
+					function gotContacts(c) {
+						console.log("gotContacts, number of results "+c.length);
+
+						mobileDiv = document.querySelector("#mobile");
+						emailDiv = document.querySelector("#email");
+
+						/* Retriving phoneNumbers */
+						for(var i=0, len=c.length; i<len; i++) {
+							if(c[i].phoneNumbers && c[i].phoneNumbers.length > 0) {
+								mobileDiv.innerHTML += "<p>"+c[i].displayName+"<br/>"+c[i].phoneNumbers[0].value+"</p>";
+							}
+						}
+
+						/* Retriving Email */
+						for(var i=0, len=c.length; i<len; i++) {
+							if(c[i].emails && c[i].emails.length > 0) {
+								emailDiv.innerHTML += "<p>"+c[i].emails[0].value+"</p>";
+							}
+						}
+					}
+				</script> 
+
+
+				<script type="text/javascript" src="js/index.js"></script><!--Import jQuery before materialize.js-->
+				<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+				<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+				<script type="text/javascript" src="js/platformOverrides.js"></script>
+				<script>
+
+				</script>
+			</body>
+			</html>

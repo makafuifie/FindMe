@@ -41,20 +41,20 @@
 
      }else{
       var response = $.parseJSON(xhr.responseText);
-      if(response.result==0){
+      if(response.result=="0: Accepted for delivery"){
+        alert("confirmation message sent");
+        
+      }
+      else{
         alert("Could not send confirmation message!");
-       
-     }
-     else{
-
-      alert("confirmation message sent");
+        
+      }
     }
+
   }
 
-}
-
-function register(){
-      
+  function register(){
+    
       // var url="ajaxRequests.php?cmd=1&email="+email+"lastName="+lastName+"firstName="+firstName+"password="+password+"phone="+phone;
       // $.ajax(url,{
       //  async: true, complete:registerComplete
@@ -72,8 +72,8 @@ function register(){
         type : 'POST',
          // url  : 'http://52.89.116.249/~makafui.fie/FindMe/register.php',
          url  : 'register.php',
-        data : data,
-        success: function(response){
+         data : data,
+         success: function(response){
           if(response.trim()==1){
             $("#error").fadeIn(1000, function(){
               $("#error").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Sorry email already taken !</div>');
@@ -130,7 +130,7 @@ function register(){
         </div>
         <div id="error">
 
-      </div>
+        </div>
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-social-person-outline prefix"></i>
@@ -184,11 +184,11 @@ function register(){
           </div>
         </div>
 
-      
+        
 
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 
 
 
