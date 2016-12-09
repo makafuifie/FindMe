@@ -29,8 +29,8 @@
 
   <script type="text/javascript">
     function getSession(){
-      // var url = "http://52.89.116.249/~makafui.fie/FindMe/ajaxRequests.php?cmd=1";
-      var url = "ajaxRequests.php?cmd=1";
+       var url = "http://52.89.116.249/~makafui.fie/FindMe/ajaxRequests.php?cmd=1";
+      // var url = "ajaxRequests.php?cmd=1";
 
       $.ajax(url,{
         async:true, complete: getSessionComplete
@@ -69,8 +69,8 @@
       var data  = "email="+email+"&password="+password;
       $.ajax({
         type:'POST',
-        // url: 'http://52.89.116.249/~makafui.fie/FindMe-admin/login.php',
-        url: 'login.php',
+         url: 'http://52.89.116.249/~makafui.fie/FindMe/login.php',
+        // url: 'login.php',
         data: data,
         success: function(response){
 

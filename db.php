@@ -1,12 +1,12 @@
 <?php
  // $db_host = "localhost";
-// $db_host = "localhost";
+$db_host = "localhost";
 $db_name = "db__makafui_fie";
  // $db_name = "find_me";
  // $db_user = "root";
 $db_user = "makafui.fie";
 $db_pass = "bcde82a208262cd2";
-$db_pass = "";
+// $db_pass = "";
 
 try{
 
