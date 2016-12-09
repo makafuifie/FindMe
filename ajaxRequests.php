@@ -9,18 +9,74 @@ if(isset($_REQUEST['cmd'])){
 		case 2:
 		sendSMS();
 		break;
+		case 3:
+		reserve();
+		break;
+		case 4:
+		getReservations();
+		break;
 		default:
 		echo "wrong command";
 		break;
 	}
 }
+function reserve(){
+	if(isset($_REQUEST['name'])){
+		include_once("reservation.php");
+		$name =$_REQUEST['name'] ;
+		$address = $_REQUEST['address'];
+		$phone = $_REQUEST['phone'];
+		$website = $_REQUEST['website'];
+		$user = $_REQUEST['user'];
+		$reservation = new reservation();
+		$row = $reservation-> addReservation($name, $phone, $address, $website, $user);
+		if($row==false){
+			echo '{"result":0,"message":"error adding location"}';
+		}
+		else{
+			echo '{"result":1,"message":"location successfully added"}';
+		}
+	}
+	else{
+		echo "values not provided";
+	}
 
+}
+
+function getReservations(){
+	include_once("reservation.php");
+	$reservation = new reservation();
+	$row = $reservation<- getReservation();
+	if($row==false){
+		echo '{"result":0,"message":"Error retrieving reservations"}';
+	}
+	else{
+		$result=$reservation->fetch();
+		if($result==false){
+			echo '{"result":0,"message":"no reservations found"}';
+		}
+		else{
+			echo '{"result":1,"reservation":[';
+			while($result){
+				echo json_encode($result);
+
+				$result=$reservation->fetch();
+				if($result!=false){
+					echo ",";
+				}
+			}
+			echo "]}";
+		}
+
+	}
+
+}
 function addUser(){
 	$firstName = $_REQUEST['firstName'];
-    $email = $_REQUEST['email'];
-    $password = $_REQUEST['password'];
-    $phone = $_REQUEST['phone'];
-    $lastName = $_REQUEST['lastName'];
+	$email = $_REQUEST['email'];
+	$password = $_REQUEST['password'];
+	$phone = $_REQUEST['phone'];
+	$lastName = $_REQUEST['lastName'];
 	
 	include_once("users.php");
 	$user = new users();
@@ -118,7 +174,7 @@ function sendMembersSMS(){
 			foreach ($rows as $value) {
 				
 
-			
+
 				$to = $rows[$i]["phone"];
 				$time=	$rows[$i]["eventTime"];
 				$amount = $rows[$i]["amount"];

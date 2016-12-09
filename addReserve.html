@@ -84,25 +84,63 @@
 		<div id="error">
 			<!-- error will be showen here ! -->
 
-		</div>
-		<div class="row" id="dim">
-			<div class="input-field col s12">                      
-				<select onchange="change(this.value)" id = "type" class="browser-default" >
-					
-					<option value="restaurant" selected>Restaurants</option>
-					<option value="lodging">Lodging</option>
-					<option value="atm">ATMs</option>
-					<option value="gas_station">Fuel Stations</option>
-					<option value="school">Schools</option> 
-					<option value="store">Stores</option>                           
-				</select>           
-			</div>
-		</div>
-		<div id="map" style="display: none">
-		</div>
+		<div id="login-page" class="row">
+			<div class="col s12 z-depth-6 card-panel">
 
-		<br />
-		<div id="info">
+				<form class="register-form">
+
+					<div id="error">
+
+					</div>
+					<div class="row margin">
+						<div class="input-field col s12">
+							
+							<input id="name" type="text" class="validate" placeholder="Name of location">
+							<!-- <label for="username" class="center-align">Username</label> -->
+						</div>
+					</div>
+					<div class = "row margin">
+						<div class="input-field col s12">
+							
+							<input id="address" type="text" class="validate" placeholder="address">
+							<!-- <label for="username" class="center-align">Username</label> -->
+						</div>
+					</div>
+					<div class="row margin">
+						<div class="input-field col s12">
+							
+							<input id="lat" type="number" class="validate" placeholder="latitude">
+							<!-- <label for="lat" class="center-align">Latitude</label>  -->
+						</div>
+					</div>
+					<div class="row margin">
+						<div class="input-field col s12">
+							
+							<input id="long" type="number" class="validate" placeholder="Longitude">
+							<!-- <label for="email" class="center-align">Email</label> -->
+						</div>
+					</div>
+					<div class="row" id="dim">
+						<div class="input-field col s12">                      
+							<select  id = "type" class="browser-default" >
+								
+								                           
+							</select>           
+						</div>
+					</div>
+
+
+					<div class="row">
+						<div class="input-field col s12">
+							<a  onclick="add()" class="btn waves-effect waves-light col s12">Add Location</a>
+						</div>
+						
+					</div>
+
+
+
+				</form>
+			</div>
 		</div>
 		
 		
@@ -236,8 +274,8 @@
 
   function reserve(name, phone, address, website){
   	var userID = localStorage.getItem('id');
-  	var url = "http://52.89.116.249/~makafui.fie/CarPool/ajaxRequests.php?cmd=3&name="+name+"&address="+address+"&lat="+lat+"&long="+long+"&type="+type;
-  	// var url = "ajaxRequests.php?cmd=3&name="+name+"&address="+address+"&phone="+phone+"&website="+website+"&user="+userID;
+  	// var url = "http://52.89.116.249/~makafui.fie/CarPool/ajaxRequests.php?cmd=3&name="+name+"&address="+address+"&lat="+lat+"&long="+long+"&type="+type;
+  	var url = "ajaxRequests.php?cmd=3&name="+name+"&address="+address+"&phone="+phone+"&website="+website+"&user="+userID;
   	$.ajax(url,{
   		async:true, complete: reserveComplete
   	});

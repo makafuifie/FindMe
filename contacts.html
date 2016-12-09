@@ -22,13 +22,7 @@
 			var mobile_system = '';
 		}
 	</script>
-	<script type="text/javascript">
-		function showMap(searchPlace){
-			localStorage.setItem('place', searchPlace);
-			window.location.href="showMap.html";
-
-		}
-	</script>
+	
 	
 	<script type="text/javascript" src="js/jquery-3.1.1.js"></script>
 	<script src="js/bootstrap.js"></script>
@@ -77,17 +71,61 @@
 
 				</div>
 				<br />
-				
-				
+
+				<div class="row margin">
+					<div class="input-field col s12">
+						<i class="mdi-social-person-outline prefix"></i>
+						<input class="validate" id="number" type="number" placeholder="">
+						<label for="email" data-error="wrong" data-success="right" class="center-align"></label>
+					</div>
+				</div>
+				<div class="row margin">
+					<div class="input-field col s12">
+						<i class="mdi-social-person-outline prefix"></i>
+						<input class="validate" id="text" type="text" placeholder="">
+						<label for="email" data-error="wrong" data-success="right" class="center-align"></label>
+					</div>
+				</div>
+				<a class="btn" id="contact">
+				</button>
+				<button id="sendMsg"></button>
+
+
 				
 				<h4>Contacts List</h4>
 				<div id="mobile"></div>
 				<div id="email"></div>
-
+				<script src="cordova.js"></script>
 				<script type="text/javascript">
-					
-				</script> 
+					document.addEventListener("deviceready", init, false);
+					function init() {
+						navigator.contacts.find([navigator.contacts.fieldType.displayName],gotContacts,errorHandler);
+					}
+					function errorHandler(e) {
+						console.log("errorHandler: "+e);
+					}
 
+					function gotContacts(c) {
+						console.log("gotContacts, number of results "+c.length);
+
+						mobileDiv = document.querySelector("#mobile");
+						emailDiv = document.querySelector("#email");
+
+						/* Retriving phoneNumbers */
+						for(var i=0, len=c.length; i<len; i++) {
+							if(c[i].phoneNumbers && c[i].phoneNumbers.length > 0) {
+								mobileDiv.innerHTML += "<p>"+c[i].displayName+"<br/>"+c[i].phoneNumbers[0].value+"</p>";
+							}
+						}
+
+						/* Retriving Email */
+						for(var i=0, len=c.length; i<len; i++) {
+							if(c[i].emails && c[i].emails.length > 0) {
+								emailDiv.innerHTML += "<p>"+c[i].emails[0].value+"</p>";
+							}
+						}
+					}
+				</script>
 
 				<script type="text/javascript" src="js/index.js"></script><!--Import jQuery before materialize.js-->
 				<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
